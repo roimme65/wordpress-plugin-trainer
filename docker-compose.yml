@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: wp-training-planner-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress-network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wp-training-planner-wp
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./plugin-target/wp-training-planner:/var/www/html/wp-content/plugins/wp-training-planner
+    depends_on:
+      - db
+    networks:
+      - wordpress-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: wp-training-planner-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - db
+    networks:
+      - wordpress-network
+
+volumes:
+  db_data:
+  wordpress_data:
+
+networks:
+  wordpress-network:
+    driver: bridge
