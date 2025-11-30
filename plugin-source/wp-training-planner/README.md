@@ -28,4 +28,11 @@ chmod +x scripts/package-plugin.sh
 # the generated .zip and a 'wp-training-planner-latest.zip' will be in ./exports/
 ```
 
+Using the modern Docker Compose plugin
+
+The scripts in this repo now prefer the modern Docker Compose plugin (invoked as `docker compose`). If you have the plugin installed on your machine use that; the scripts will fall back to the legacy `docker-compose` binary if the plugin is not available.
+
+If you need to install the Compose plugin, follow Docker's docs: https://docs.docker.com/compose/install/
+
+
 - Export is only available to users with `manage_options` capability and uses a nonce check.

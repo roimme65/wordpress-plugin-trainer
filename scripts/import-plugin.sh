@@ -50,10 +50,13 @@ $(ls -la "$IMPORT_DIR")"
 
 echo "Starting import docker-compose stack..."
 # Use docker-compose (standalone) if available, otherwise docker compose
-if command -v docker-compose >/dev/null 2>&1; then
+if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1 2>/dev/null; then
+  docker compose -f "$COMPOSE_FILE" up -d --build
+elif command -v docker-compose >/dev/null 2>&1; then
   docker-compose -f "$COMPOSE_FILE" up -d --build
 else
-  docker compose -f "$COMPOSE_FILE" up -d --build
+  echo "ERROR: neither 'docker compose' plugin nor 'docker-compose' found. Install one of them."
+  exit 3
 fi
 
 echo "Import WP instance should be available at http://localhost:8082 (phpMyAdmin: http://localhost:8083)"

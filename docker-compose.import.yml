@@ -4,7 +4,7 @@ services:
   db_import:
     image: mysql:8.0
     container_name: wp-training-planner-db-import
-    restart: unless-stopped
+    restart: always
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
@@ -18,7 +18,7 @@ services:
   wordpress_import:
     image: wordpress:latest
     container_name: wp-training-planner-wp-import
-    restart: unless-stopped
+    restart: always
     ports:
       - "8082:80"
     environment:
@@ -38,7 +38,7 @@ services:
   phpmyadmin_import:
     image: phpmyadmin:latest
     container_name: wp-training-planner-phpmyadmin-import
-    restart: unless-stopped
+    restart: always
     ports:
       - "8083:80"
     environment:
