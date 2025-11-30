@@ -1,41 +1,31 @@
-# Training Planner WordPress Plugin
+# Training Planner — plugin-source
 
-This plugin replaces the Python-based training planning tool. It integrates directly into WordPress.
+Developer copy of the Training Planner plugin. This directory is intended as the editable source (plugin-source) and includes a safer activation hook which uses properly formatted SQL statements for dbDelta and an optional uninstall routine to drop created tables.
 
-## Installation
+How to use
+- Copy this folder into your WordPress plugin directory (wp-content/plugins/) or use it in local development via the included docker-compose in the repository root.
+- Activate the plugin in WordPress admin.
 
-1. Copy the `wp-training-planner` folder to your WordPress plugins directory (`wp-content/plugins/`).
-2. Log in to your WordPress Admin Dashboard.
-3. Go to **Plugins > Installed Plugins**.
-4. Activate **Training Planner**.
+Notes
+- The activation function uses backticked column and key names to improve compatibility with dbDelta.
+- This source is intentionally a smaller, safer copy for development. The production-ready implementation is in `plugin-target/wp-training-planner`.
 
-## Usage
+Export ZIP
+- The admin UI provides a "Download plugin ZIP" action which creates a zip of the current plugin folder and streams it to your browser. The archive contains a single top-level folder (the plugin slug) so it is ready to drop into other WordPress instances or to extract for editing.
 
-### Admin (Backend)
-- Go to **Training Planner** in the admin menu.
-- **Dashboard**: View upcoming sessions and delete them if necessary.
-- **Monthly Planning**:
-    - Select a month and year.
-    - Click **Generate Sessions** to create the standard schedule for that month (based on Summer/Winter logic).
-    - Assign trainers to sessions using the dropdowns.
-    - View trainer availability (Yes/No/Maybe) in the table.
-    - Click **Save Assignments** to save changes.
-    - Click **Publish Plan** to mark the month as final.
-    - Click **Export ICS** to download the schedule for your calendar.
+Security
+Packaging & GitHub
 
-### Trainer (Frontend)
-- Create a new page in WordPress (e.g., "Trainer Dashboard").
-- Add the shortcode `[training_planner_dashboard]` to the page content.
-- Trainers must be logged in to view this page.
-- Trainers can:
-    - View sessions for the current/selected month.
-    - Set their availability (Yes/No/Maybe).
-    - Confirm their assigned sessions.
+- This repository contains an automatic packaging workflow (.github/workflows/package-plugin.yml) that will run on push to `main` and on manual dispatch. It creates a zip archive from `plugin-source/wp-training-planner` and uploads it as an Actions artifact; on manual triggers it also creates a release with the ZIP attached.
 
-## Logic
-- **Summer Season**: April - September
-- **Winter Season**: October - March
-- **Schedule**:
-    - Wednesdays: 17:30-19:30 (Jugend), 19:30-22:00 (Freies Spiel) [Summer] / 20:00-22:00 [Winter]
-    - Fridays: 17:30-19:30 (Jugend), 19:30-22:00 (Erwachsene) [Summer] / 17:00-19:00, 20:30-22:15 [Winter]
-    - Saturdays: 10:00-12:00 (Offen/Jugend)
+- You can also create a local zip quickly using the included script:
+
+```bash
+cd /path/to/repo
+chmod +x scripts/package-plugin.sh
+./scripts/package-plugin.sh
+
+# the generated .zip and a 'wp-training-planner-latest.zip' will be in ./exports/
+```
+
+- Export is only available to users with `manage_options` capability and uses a nonce check.
