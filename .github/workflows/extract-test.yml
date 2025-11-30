@@ -1,0 +1,23 @@
+name: Extract tests
+
+on:
+  push:
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/extract-test.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+
+jobs:
+  extract-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Run extractor tests
+        run: |
+          python3 scripts/test-extract.py

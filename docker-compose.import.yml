@@ -29,7 +29,7 @@ services:
       WORDPRESS_DEBUG: 1
     volumes:
       - wordpress_import_data:/var/www/html
-      - ./plugin-import:/var/www/html/wp-content/plugins
+      - ./plugin-import/current:/var/www/html/wp-content/plugins
     depends_on:
       - db_import
     networks:
