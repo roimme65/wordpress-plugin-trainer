@@ -57,6 +57,7 @@ cp ~/Downloads/mein-plugin.zip plugin-import/source/
 | `--activate` | Plugin automatisch aktivieren |
 | `--activate-slug=name` | Spezifischen Plugin-Slug verwenden |
 | `--force-root-clean` | Erzwungenes Cleanup bei Berechtigungsproblemen |
+| `--no-recreate` / `-n` | Opt‑out: Standardmäßig werden die Import‑Container neu erstellt. Mit `--no-recreate` wird das Recreate übersprungen. |
 
 ## 🔄 Workflow-Beispiele
 
@@ -114,6 +115,9 @@ docker-compose -f docker-compose.import.yml logs -f wordpress_import
 **Neustart (Daten behalten):**
 ```bash
 docker-compose -f docker-compose.import.yml restart
+
+> Hinweis: Das Import‑Skript startet standardmäßig das Import‑Stack neu (force‑recreate) damit Änderungen am gemounteten `plugin-import/current` sofort wirksam werden.
+Falls du das nicht möchtest, verwende beim Import die Option `--no-recreate` (oder `-n`) um das Recreate zu verhindern.
 ```
 
 **Alles löschen (inkl. Datenbank):**
