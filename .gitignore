@@ -2,3 +2,4 @@ plugin-source/extracted/
 plugin-source/*.zip
 .DS_Store
 *.log
+*.zip
