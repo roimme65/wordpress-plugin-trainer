@@ -1,0 +1,197 @@
+/* Training Planner Frontend Styles */
+
+.tp-dashboard {
+	max-width: 1200px;
+	margin: 20px auto;
+	padding: 20px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+}
+
+.tp-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+	padding: 15px;
+	background: #f5f5f5;
+	border-radius: 8px;
+}
+
+.tp-controls h2 {
+	margin: 0;
+	font-size: 24px;
+	color: #333;
+}
+
+.tp-btn {
+	display: inline-block;
+	padding: 10px 20px;
+	background: #0073aa;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background 0.3s;
+}
+
+.tp-btn:hover {
+	background: #005a87;
+	color: white;
+}
+
+.tp-btn-primary {
+	background: #46b450;
+	padding: 12px 30px;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.tp-btn-primary:hover {
+	background: #399d43;
+}
+
+.tp-btn-confirm {
+	background: #00a0d2;
+	padding: 6px 12px;
+	font-size: 12px;
+	margin-left: 10px;
+}
+
+.tp-session-list {
+	display: grid;
+	gap: 20px;
+	margin-bottom: 30px;
+}
+
+.tp-session-card {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 20px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	transition: box-shadow 0.3s;
+}
+
+.tp-session-card:hover {
+	box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.tp-session-card.tp-assigned {
+	border: 2px solid #46b450;
+	background: #f0f9f1;
+}
+
+.tp-session-info h3 {
+	margin: 0 0 15px 0;
+	color: #0073aa;
+	font-size: 18px;
+}
+
+.tp-session-meta {
+	margin-bottom: 15px;
+	color: #555;
+	line-height: 1.6;
+}
+
+.tp-assigned-notice {
+	margin-top: 15px;
+	padding: 10px;
+	background: #46b450;
+	color: white;
+	border-radius: 4px;
+	font-weight: bold;
+}
+
+.tp-confirmed {
+	color: #fff;
+	opacity: 0.9;
+}
+
+.tp-availability-form {
+	display: flex;
+	gap: 15px;
+	margin-top: 15px;
+	padding-top: 15px;
+	border-top: 1px solid #eee;
+}
+
+.tp-radio-label {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	background: #f9f9f9;
+	border: 2px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.tp-radio-label:hover {
+	background: #f0f0f0;
+}
+
+.tp-radio-label input[type="radio"] {
+	margin-right: 8px;
+}
+
+.tp-radio-label input[type="radio"]:checked + span {
+	font-weight: bold;
+}
+
+.tp-status-yes {
+	color: #46b450;
+}
+
+.tp-status-maybe {
+	color: #ffb900;
+}
+
+.tp-status-no {
+	color: #dc3232;
+}
+
+.tp-radio-label:has(input:checked) {
+	border-color: currentColor;
+	background: rgba(0, 0, 0, 0.05);
+}
+
+.tp-submit-wrapper {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.tp-message {
+	padding: 12px 20px;
+	margin-bottom: 20px;
+	border-radius: 4px;
+	font-weight: 500;
+}
+
+.tp-success {
+	background: #d4edda;
+	color: #155724;
+	border: 1px solid #c3e6cb;
+}
+
+.tp-error {
+	background: #f8d7da;
+	color: #721c24;
+	border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 768px) {
+	.tp-controls {
+		flex-direction: column;
+		gap: 15px;
+	}
+	.tp-availability-form {
+		flex-direction: column;
+	}
+	.tp-radio-label {
+		width: 100%;
+	}
+}
+
