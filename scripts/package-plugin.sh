@@ -5,7 +5,11 @@ set -euo pipefail
 # Packages plugin-source/wp-training-planner into exports/<name>-<timestamp>.zip
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SRC="$ROOT_DIR/plugin-source/wp-training-planner"
+
+# Override which plugin folder to package.
+# Default remains plugin-source/wp-training-planner.
+PLUGIN_DIR_REL="${PLUGIN_DIR:-plugin-source/wp-training-planner}"
+PLUGIN_SRC="$ROOT_DIR/$PLUGIN_DIR_REL"
 EXPORT_DIR="$ROOT_DIR/exports"
 
 if [ ! -d "$PLUGIN_SRC" ]; then

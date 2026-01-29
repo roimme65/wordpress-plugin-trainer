@@ -21,7 +21,7 @@ jobs:
       - name: Run packaging script
         run: |
           chmod +x scripts/package-plugin.sh
-          scripts/package-plugin.sh
+          PLUGIN_DIR=plugin-target/wp-training-planner scripts/package-plugin.sh
 
       - name: Create release asset name
         run: |
