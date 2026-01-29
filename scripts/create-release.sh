@@ -79,6 +79,15 @@ if [[ -n "$(git status --porcelain)" ]]; then
   exit 1
 fi
 
+# Track what existed before the run, so dry-run can clean up reliably.
+VERSION_PREEXIST=false
+CHANGELOG_PREEXIST=false
+RELEASES_DIR_PREEXIST=false
+
+[[ -f VERSION ]] && VERSION_PREEXIST=true
+[[ -f CHANGELOG.md ]] && CHANGELOG_PREEXIST=true
+[[ -d releases ]] && RELEASES_DIR_PREEXIST=true
+
 CURRENT_BRANCH=$(git branch --show-current)
 if [[ "$CURRENT_BRANCH" != "main" ]]; then
   print_error "Nicht auf main Branch. Aktuell auf: $CURRENT_BRANCH"
@@ -90,14 +99,6 @@ if [[ ! -f VERSION ]]; then
   echo "$default_v" > VERSION
   print_warning "VERSION Datei erstellt mit ${default_v}"
 fi
-
-VERSION_WAS_PRESENT=false
-CHANGELOG_WAS_PRESENT=false
-RELEASES_DIR_WAS_PRESENT=false
-
-[[ -f VERSION ]] && VERSION_WAS_PRESENT=true
-[[ -f CHANGELOG.md ]] && CHANGELOG_WAS_PRESENT=true
-[[ -d releases ]] && RELEASES_DIR_WAS_PRESENT=true
 
 CURRENT_VERSION=$(cat VERSION | tr -d ' \t\n\r')
 print_info "Aktuelle Version: v${CURRENT_VERSION}"
@@ -197,18 +198,19 @@ print_success "CHANGELOG.md aktualisiert"
 if [[ "$DRY_RUN" = true ]]; then
   print_warning "DRY-RUN: Kein Commit/Tag/Push. Zeige Änderungen und räume dann auf..."
   git diff --stat || true
+  git status --porcelain || true
 
   # Cleanup: restore modified tracked files and remove newly created ones.
   git restore "$PLUGIN_FILE" || true
   git restore scripts/create-release.sh || true
 
-  if [[ "$VERSION_WAS_PRESENT" = true ]]; then
+  if [[ "$VERSION_PREEXIST" = true ]]; then
     git restore VERSION || true
   else
     rm -f VERSION || true
   fi
 
-  if [[ "$CHANGELOG_WAS_PRESENT" = true ]]; then
+  if [[ "$CHANGELOG_PREEXIST" = true ]]; then
     git restore CHANGELOG.md || true
   else
     rm -f CHANGELOG.md || true
@@ -216,7 +218,7 @@ if [[ "$DRY_RUN" = true ]]; then
 
   rm -f "$RELEASE_NOTES_FILE" || true
 
-  if [[ "$RELEASES_DIR_WAS_PRESENT" = false ]]; then
+  if [[ "$RELEASES_DIR_PREEXIST" = false ]]; then
     rmdir releases 2>/dev/null || true
   fi
 
