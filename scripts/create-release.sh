@@ -129,7 +129,8 @@ print_info "Aktualisiere Plugin-Version in ${PLUGIN_FILE}..."
 # Header: * Version: X
 sed -i -E "s/^( \* Version:).*/\1 ${NEW_VERSION}/" "$PLUGIN_FILE"
 # Const: define( 'TRAINING_PLANNER_VERSION', 'X' );
-sed -i -E "s/^(define\( 'TRAINING_PLANNER_VERSION', ')[^']*('\ );)/\1${NEW_VERSION}\2/" "$PLUGIN_FILE"
+# (avoid fragile capture groups / parentheses escaping differences)
+sed -i -E "s/^define\( 'TRAINING_PLANNER_VERSION', '[^']*' \);/define( 'TRAINING_PLANNER_VERSION', '${NEW_VERSION}' );/" "$PLUGIN_FILE"
 print_success "Plugin-Version aktualisiert"
 
 mkdir -p releases
