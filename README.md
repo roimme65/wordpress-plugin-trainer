@@ -6,6 +6,12 @@ Ein vollständiges WordPress-Plugin für die Verwaltung von Trainingseinheiten m
 
 Dieses Projekt steht unter der GNU General Public License v2 oder später (GPLv2+). Siehe [LICENSE](LICENSE).
 
+## Releases / Automation
+
+- **GitHub Release automatisch:** Tag pushen `v*` (z.B. `v1.1.0`) → Workflow erstellt Release + ZIP-Assets.
+- **CHANGELOG + Release Notes im Repo:** mit `./scripts/create-release.sh` (legt bei Bedarf `CHANGELOG.md` und `releases/vX.Y.Z.md` an).
+- Details: siehe [scripts/README.md](scripts/README.md).
+
 ## 📦 Projekt-Struktur
 
 ```
