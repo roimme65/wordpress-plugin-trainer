@@ -2,10 +2,11 @@
 #
 # WordPress Training Planner - Automatische Release-Erstellung
 #
-# Verwendung: ./scripts/create-release.sh [major|minor|patch] [--auto]
+# Verwendung: ./scripts/create-release.sh [major|minor|patch] [--auto] [--dry-run]
 #
 # Beispiel: ./scripts/create-release.sh patch
 # Beispiel: ./scripts/create-release.sh patch --auto
+# Beispiel: ./scripts/create-release.sh patch --auto --dry-run
 #
 # Ablauf:
 # - prüft sauberes Git-Working-Tree + Branch main
@@ -52,14 +53,16 @@ default_version_from_plugin() {
 
 BUMP_TYPE="patch"
 AUTO_MODE=false
+DRY_RUN=false
 
 for arg in "$@"; do
   case "$arg" in
     --auto) AUTO_MODE=true ;;
+    --dry-run) DRY_RUN=true ;;
     major|minor|patch) BUMP_TYPE="$arg" ;;
     *)
       print_error "Ungültiges Argument: $arg"
-      echo "Verwendung: $0 [major|minor|patch] [--auto]"
+      echo "Verwendung: $0 [major|minor|patch] [--auto] [--dry-run]"
       exit 1
       ;;
   esac
@@ -87,6 +90,14 @@ if [[ ! -f VERSION ]]; then
   echo "$default_v" > VERSION
   print_warning "VERSION Datei erstellt mit ${default_v}"
 fi
+
+VERSION_WAS_PRESENT=false
+CHANGELOG_WAS_PRESENT=false
+RELEASES_DIR_WAS_PRESENT=false
+
+[[ -f VERSION ]] && VERSION_WAS_PRESENT=true
+[[ -f CHANGELOG.md ]] && CHANGELOG_WAS_PRESENT=true
+[[ -d releases ]] && RELEASES_DIR_WAS_PRESENT=true
 
 CURRENT_VERSION=$(cat VERSION | tr -d ' \t\n\r')
 print_info "Aktuelle Version: v${CURRENT_VERSION}"
@@ -182,6 +193,36 @@ EOFCHG
 } > CHANGELOG.md.new
 mv CHANGELOG.md.new CHANGELOG.md
 print_success "CHANGELOG.md aktualisiert"
+
+if [[ "$DRY_RUN" = true ]]; then
+  print_warning "DRY-RUN: Kein Commit/Tag/Push. Zeige Änderungen und räume dann auf..."
+  git diff --stat || true
+
+  # Cleanup: restore modified tracked files and remove newly created ones.
+  git restore "$PLUGIN_FILE" || true
+  git restore scripts/create-release.sh || true
+
+  if [[ "$VERSION_WAS_PRESENT" = true ]]; then
+    git restore VERSION || true
+  else
+    rm -f VERSION || true
+  fi
+
+  if [[ "$CHANGELOG_WAS_PRESENT" = true ]]; then
+    git restore CHANGELOG.md || true
+  else
+    rm -f CHANGELOG.md || true
+  fi
+
+  rm -f "$RELEASE_NOTES_FILE" || true
+
+  if [[ "$RELEASES_DIR_WAS_PRESENT" = false ]]; then
+    rmdir releases 2>/dev/null || true
+  fi
+
+  print_success "DRY-RUN fertig (Working Tree zurückgesetzt)."
+  exit 0
+fi
 
 print_info "Erstelle Git-Commit..."
 git add VERSION "$PLUGIN_FILE" "$RELEASE_NOTES_FILE" CHANGELOG.md
