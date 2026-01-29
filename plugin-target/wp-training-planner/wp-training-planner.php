@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Training Planner
  * Description: A tool for planning training sessions and managing trainer availability.
- * Version: 1.1
+ * Version: 1.1.1
  * Author: Antigravity
  * Text Domain: training-planner
  * Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants
-define( 'TRAINING_PLANNER_VERSION', '1.1' );
+define( 'TRAINING_PLANNER_VERSION', '1.1.1' );
 define( 'TRAINING_PLANNER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TRAINING_PLANNER_URL', plugin_dir_url( __FILE__ ) );
 
