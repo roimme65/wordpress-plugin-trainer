@@ -6,6 +6,8 @@
  * Author: Antigravity
  * Text Domain: training-planner
  * Domain Path: /languages
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

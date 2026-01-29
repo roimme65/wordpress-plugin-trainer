@@ -2,6 +2,10 @@
 
 Ein vollständiges WordPress-Plugin für die Verwaltung von Trainingseinheiten mit Docker-basierter Entwicklungs- und Testumgebung.
 
+## Lizenz
+
+Dieses Projekt steht unter der GNU General Public License v2 oder später (GPLv2+). Siehe [LICENSE](LICENSE).
+
 ## 📦 Projekt-Struktur
 
 ```
