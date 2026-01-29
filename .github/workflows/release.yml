@@ -1,0 +1,38 @@
+name: Release (tag)
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up zip tool
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Run packaging script
+        run: |
+          chmod +x scripts/package-plugin.sh
+          scripts/package-plugin.sh
+
+      - name: Create release asset name
+        run: |
+          cp -f exports/wp-training-planner-latest.zip "exports/wp-training-planner-${GITHUB_REF_NAME}.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            exports/wp-training-planner-${{ github.ref_name }}.zip
+            exports/wp-training-planner-latest.zip
